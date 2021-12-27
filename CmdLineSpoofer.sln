@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmdLineSpoofer", "CmdLineSpoofer\CmdLineSpoofer.csproj", "{5D03EFC2-72E9-4410-B147-0A1A5C743999}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5D03EFC2-72E9-4410-B147-0A1A5C743999}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D03EFC2-72E9-4410-B147-0A1A5C743999}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D03EFC2-72E9-4410-B147-0A1A5C743999}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D03EFC2-72E9-4410-B147-0A1A5C743999}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FA3EC8D6-EEF2-44A5-9491-0BC35B23551E}
+	EndGlobalSection
+EndGlobal
