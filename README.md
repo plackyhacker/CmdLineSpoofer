@@ -26,6 +26,8 @@ Execution of the code is shown below:
 [+] Resuming process
 ```
 
+This example injects a meterpreter reverse shell using PowerShell but it get's logged with a spoofed command line argument.
+
 # Proof of Concept
 
 Sysmon logs the original (spoofed) command line:
